@@ -11,6 +11,12 @@ public class PhoneNumber {
     private PhoneType type;
     @ManyToOne
     private Person person;
+
+    public PhoneNumber() { }
+    public PhoneNumber(String number, PhoneType type) {
+        this.number = number;
+        this.type = type;
+    }
 }
 
 enum PhoneType {
