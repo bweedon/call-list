@@ -71,6 +71,23 @@ class ContactServiceTest {
         assertNull(shouldBeNull);
     }
 
+    @Test
+    void deleteById_Found() {
+        ContactDto toAdd = getTestContact();
+        ContactDto added = contactService.addContact(toAdd);
+        // Make sure it was added
+        ContactDto retrieved = contactService.getContactById(added.getId());
+        assertEquals(added.getId(), retrieved.getId());
+        contactService.deleteContactById(retrieved.getId());
+        assertNull(contactService.getContactById(retrieved.getId()));
+    }
+
+    // This test is more just to make sure an exception doesn't happen
+    @Test
+    void deleteById_NotFound() {
+        contactService.deleteContactById(42);
+    }
+
     private ContactDto getTestContact() {
         ContactDto toAdd = new ContactDto();
         toAdd.setName(new Name(

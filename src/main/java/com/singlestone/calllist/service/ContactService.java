@@ -51,6 +51,12 @@ public class ContactService {
         }
     }
 
+    public void deleteContactById(int contactId) {
+        if(personDao.existsById(contactId)) {
+            personDao.deleteById(contactId);
+        }
+    }
+
     private Person getPersonFromContact(ContactDto contact) {
         Person person = Person.From(contact);
         // Set the id here since it may be used in an update

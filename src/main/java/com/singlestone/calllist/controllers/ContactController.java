@@ -35,4 +35,9 @@ public class ContactController {
         toUpdate.setId(contactId);
         return contactService.updateContact(toUpdate);
     }
+
+    @DeleteMapping(value = "/{contactId}", produces = "application/json")
+    public void deleteContact(@PathVariable int contactId) {
+        contactService.deleteContactById(contactId);
+    }
 }
