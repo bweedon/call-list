@@ -22,6 +22,33 @@ class ContactServiceTest {
 
     @Test
     void addAndRetrieveContact() {
+        ContactDto toAdd = getTestContact();
+        contactService.addContact(toAdd);
+        List<ContactDto> added = contactService.getAllContacts();
+        added.forEach(c -> {
+            //Test the phone list is created correctly, I hadn't realized this wasn't working earlier.
+            assertEquals(1, c.getPhone().size());
+            assertEquals(toAdd.getName().getLast(), c.getName().getLast());
+        });
+    }
+
+    @Test
+    void getById_NoneFound() {
+        ContactDto shouldBeNull = contactService.getContactById(42);
+        assertNull(shouldBeNull);
+    }
+
+    @Test
+    void getById_Found() {
+        ContactDto toAdd = getTestContact();
+        ContactDto added = contactService.addContact(toAdd);
+        ContactDto retrieved = contactService.getContactById(added.getId());
+        assertNotNull(retrieved);
+        assertEquals(added.getId(), retrieved.getId());
+        assertEquals(added.getPhone().size(), retrieved.getPhone().size());
+    }
+
+    private ContactDto getTestContact() {
         ContactDto toAdd = new ContactDto();
         toAdd.setName(new Name(
                 "first",
@@ -38,12 +65,7 @@ class ContactServiceTest {
                 new PhoneNumber("phonenumber", PhoneType.HOME)
         ));
         toAdd.setEmail("email@example.com");
-        contactService.addContact(toAdd);
-        List<ContactDto> added = contactService.getAllContacts();
-        added.forEach(c -> {
-            //Test the phone list is created correctly, I hadn't realized this wasn't working earlier.
-            assertEquals(1, c.getPhone().size());
-            assertEquals(toAdd.getName().getLast(), c.getName().getLast());
-        });
+        return toAdd;
+
     }
 }

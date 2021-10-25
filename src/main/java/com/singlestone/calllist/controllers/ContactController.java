@@ -23,4 +23,9 @@ public class ContactController {
     public ContactDto addContact(@RequestBody ContactDto toAdd) {
         return contactService.addContact(toAdd);
     }
+
+    @GetMapping(value = "/{contactId}", produces = "application/json")
+    public ContactDto getContactById(@PathVariable int contactId) {
+        return contactService.getContactById(contactId);
+    }
 }
