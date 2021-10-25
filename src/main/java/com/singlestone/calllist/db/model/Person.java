@@ -1,7 +1,10 @@
 package com.singlestone.calllist.db.model;
 
+import com.singlestone.calllist.dto.ContactDto;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 
@@ -19,6 +22,20 @@ public class Person {
     private String email;
     @OneToMany(mappedBy = "person")
     private List<PhoneNumber> phoneNumbers;
+
+    public Person() { }
+
+    public Person(String firstName, String middleName, String lastName, String street, String city, String state, int zip, String email, List<PhoneNumber> phoneNumbers) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.email = email;
+        this.phoneNumbers = phoneNumbers;
+    }
 
     public int getId() {
         return Id;
@@ -100,17 +117,18 @@ public class Person {
         this.phoneNumbers = phoneNumbers;
     }
 
-    public Person() { }
-
-    public Person(String firstName, String middleName, String lastName, String street, String city, String state, int zip, String email, List<PhoneNumber> phoneNumbers) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.email = email;
-        this.phoneNumbers = phoneNumbers;
+    public static Person From(ContactDto contact) {
+        return new Person(
+                contact.getName().getFirst(),
+                contact.getName().getMiddle(),
+                contact.getName().getLast(),
+                contact.getAddress().getStreet(),
+                contact.getAddress().getCity(),
+                contact.getAddress().getState(),
+                contact.getAddress().getZip(),
+                contact.getEmail(),
+                // Simplifies looping and converting from one PhoneNumber to another.
+                contact.getPhone().stream().map(PhoneNumber::From).collect(Collectors.toList())
+        );
     }
 }

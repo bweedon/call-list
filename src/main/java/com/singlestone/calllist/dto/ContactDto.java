@@ -6,10 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ContactDto {
+    private int id;
     private Name name;
     private Address address;
     private List<PhoneNumber> phone;
     private String email;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Name getName() {
         return name;
@@ -45,6 +54,7 @@ public class ContactDto {
 
     public static ContactDto From(Person person) {
         ContactDto contact = new ContactDto();
+        contact.setId(person.getId());
         contact.setName(new Name(person.getFirstName(), person.getMiddleName(), person.getLastName()));
         contact.setAddress(new Address(person.getStreet(), person.getCity(), person.getState(), person.getZip()));
         // Simplifies looping over all the db phone numbers and converting them to dto phone numbers.

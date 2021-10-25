@@ -32,6 +32,10 @@ public class PhoneNumber {
     public void setType(PhoneType type) {
         this.type = type;
     }
+
+    public static PhoneNumber From(com.singlestone.calllist.dto.PhoneNumber phone) {
+        return new PhoneNumber(phone.getNumber(), phone.getType());
+    }
 }
 
 
