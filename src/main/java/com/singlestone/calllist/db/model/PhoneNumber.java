@@ -8,6 +8,7 @@ public class PhoneNumber {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int Id;
     private String number;
+    @Enumerated(EnumType.STRING)
     private PhoneType type;
     @ManyToOne
     private Person person;

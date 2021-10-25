@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +19,7 @@ public class Person {
     private String state;
     private int zip;
     private String email;
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", targetEntity = com.singlestone.calllist.db.model.PhoneNumber.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PhoneNumber> phoneNumbers;
 
     public Person() { }

@@ -1,26 +1,36 @@
 package com.singlestone.calllist.service;
 
+import com.singlestone.calllist.db.dao.PersonDao;
 import com.singlestone.calllist.db.model.PhoneType;
-import com.singlestone.calllist.dto.Address;
-import com.singlestone.calllist.dto.ContactDto;
-import com.singlestone.calllist.dto.Name;
-import com.singlestone.calllist.dto.PhoneNumber;
-import org.junit.jupiter.api.Test;
+import com.singlestone.calllist.dto.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ContactServiceTest {
 
     @Autowired
     ContactService contactService;
 
+    @Autowired
+    PersonDao personDao;
+
+    @BeforeEach
+    void wipeDB() {
+        personDao.deleteAll();
+    }
+
     @Test
+    @Order(1)
     void addAndRetrieveContact() {
         ContactDto toAdd = getTestContact();
         contactService.addContact(toAdd);
@@ -33,12 +43,14 @@ class ContactServiceTest {
     }
 
     @Test
+    @Order(2)
     void getById_NoneFound() {
         ContactDto shouldBeNull = contactService.getContactById(42);
         assertNull(shouldBeNull);
     }
 
     @Test
+    @Order(3)
     void getById_Found() {
         ContactDto toAdd = getTestContact();
         ContactDto added = contactService.addContact(toAdd);
@@ -49,6 +61,7 @@ class ContactServiceTest {
     }
 
     @Test
+    @Order(4)
     void updateById_Found() {
         ContactDto toAdd = getTestContact();
         ContactDto added = contactService.addContact(toAdd);
@@ -64,6 +77,7 @@ class ContactServiceTest {
     }
 
     @Test
+    @Order(5)
     void updateById_NotFound() {
         ContactDto notExists = getTestContact();
         notExists.setId(42);
@@ -72,6 +86,7 @@ class ContactServiceTest {
     }
 
     @Test
+    @Order(6)
     void deleteById_Found() {
         ContactDto toAdd = getTestContact();
         ContactDto added = contactService.addContact(toAdd);
@@ -84,8 +99,25 @@ class ContactServiceTest {
 
     // This test is more just to make sure an exception doesn't happen
     @Test
+    @Order(7)
     void deleteById_NotFound() {
         contactService.deleteContactById(42);
+    }
+
+    @Test
+    @Order(8)
+    void CallList_Filter() {
+        ContactDto toAdd1 = getTestContact();
+        ContactDto toAdd2 = getTestContact();
+        ContactDto toAdd3 = getTestContact();
+        toAdd3.setPhone(Arrays.asList(
+                new PhoneNumber("not home", PhoneType.WORK)
+        ));
+        contactService.addContact(toAdd1);
+        contactService.addContact(toAdd2);
+        contactService.addContact(toAdd3);
+        List<CallEntryDto> callList = contactService.getCallList();
+        Assertions.assertEquals(2, callList.size());
     }
 
     private ContactDto getTestContact() {

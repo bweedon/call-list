@@ -2,10 +2,13 @@ package com.singlestone.calllist.service;
 
 import com.singlestone.calllist.db.dao.PersonDao;
 import com.singlestone.calllist.db.model.Person;
+import com.singlestone.calllist.db.model.PhoneType;
+import com.singlestone.calllist.dto.CallEntryDto;
 import com.singlestone.calllist.dto.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +58,12 @@ public class ContactService {
         if(personDao.existsById(contactId)) {
             personDao.deleteById(contactId);
         }
+    }
+
+    public List<CallEntryDto> getCallList() {
+        List<Person> persons = personDao.findByPhoneNumber_WithHomePhone();
+        List<CallEntryDto> entries = persons.stream().map(CallEntryDto::From).collect(Collectors.toList());
+        return entries;
     }
 
     private Person getPersonFromContact(ContactDto contact) {

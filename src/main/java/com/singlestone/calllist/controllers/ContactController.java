@@ -1,5 +1,6 @@
 package com.singlestone.calllist.controllers;
 
+import com.singlestone.calllist.dto.CallEntryDto;
 import com.singlestone.calllist.dto.ContactDto;
 import com.singlestone.calllist.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,10 @@ public class ContactController {
     @DeleteMapping(value = "/{contactId}", produces = "application/json")
     public void deleteContact(@PathVariable int contactId) {
         contactService.deleteContactById(contactId);
+    }
+
+    @GetMapping(value = "/call-list", produces = "application/json")
+    public List<CallEntryDto> getCallList() {
+        return contactService.getCallList();
     }
 }
