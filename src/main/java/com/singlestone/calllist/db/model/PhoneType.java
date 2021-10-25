@@ -1,6 +1,7 @@
 package com.singlestone.calllist.db.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PhoneType {
     MOBILE("mobile"),
@@ -8,8 +9,14 @@ public enum PhoneType {
     HOME("home");
 
     private String typeText;
+
     PhoneType(String typeText) {
         this.typeText = typeText;
+    }
+
+    @JsonValue
+    public String getTypeText() {
+        return typeText;
     }
 
     @JsonCreator
@@ -24,6 +31,6 @@ public enum PhoneType {
 
     @Override
     public String toString() {
-        return typeText;
+        return typeText.toLowerCase();
     }
 }

@@ -6,7 +6,6 @@ import com.singlestone.calllist.dto.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +25,12 @@ public class ContactService {
     }
 
     public ContactDto addContact(ContactDto toAdd) {
-        Person added = personDao.save(Person.From(toAdd));
+        Person personToAdd = Person.From(toAdd);
+        // Set the person object on the phone numbers so they are persisted correctly.
+        personToAdd.getPhoneNumbers().forEach(phoneNumber -> {
+            phoneNumber.setPerson(personToAdd);
+        });
+        Person added = personDao.save(personToAdd);
         return ContactDto.From(added);
     }
-
 }

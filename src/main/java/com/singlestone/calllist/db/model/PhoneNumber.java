@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 public class PhoneNumber {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int Id;
     private String number;
     private PhoneType type;
@@ -31,6 +32,22 @@ public class PhoneNumber {
 
     public void setType(PhoneType type) {
         this.type = type;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public static PhoneNumber From(com.singlestone.calllist.dto.PhoneNumber phone) {

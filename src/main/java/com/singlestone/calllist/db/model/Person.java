@@ -20,7 +20,7 @@ public class Person {
     private String state;
     private int zip;
     private String email;
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PhoneNumber> phoneNumbers;
 
     public Person() { }
