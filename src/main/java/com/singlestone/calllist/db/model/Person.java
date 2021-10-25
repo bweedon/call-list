@@ -1,4 +1,4 @@
-package com.singlestone.calllist.db;
+package com.singlestone.calllist.db.model;
 
 import javax.persistence.*;
 import java.util.List;

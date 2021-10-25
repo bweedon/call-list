@@ -1,6 +1,9 @@
 package com.singlestone.calllist.db;
 
 import com.singlestone.calllist.db.dao.PersonDao;
+import com.singlestone.calllist.db.model.Person;
+import com.singlestone.calllist.db.model.PhoneNumber;
+import com.singlestone.calllist.db.model.PhoneType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @SpringBootTest(classes = { com.singlestone.calllist.CallListApplication.class })

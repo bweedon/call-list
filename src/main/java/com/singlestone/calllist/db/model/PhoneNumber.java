@@ -1,4 +1,4 @@
-package com.singlestone.calllist.db;
+package com.singlestone.calllist.db.model;
 
 import javax.persistence.*;
 
@@ -16,12 +16,22 @@ public class PhoneNumber {
         this.number = number;
         this.type = type;
     }
-}
 
-enum PhoneType {
-    MOBILE,
-    WORK,
-    HOME
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public PhoneType getType() {
+        return type;
+    }
+
+    public void setType(PhoneType type) {
+        this.type = type;
+    }
 }
 
 
