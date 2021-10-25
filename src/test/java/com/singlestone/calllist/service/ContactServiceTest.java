@@ -48,6 +48,29 @@ class ContactServiceTest {
         assertEquals(added.getPhone().size(), retrieved.getPhone().size());
     }
 
+    @Test
+    void updateById_Found() {
+        ContactDto toAdd = getTestContact();
+        ContactDto added = contactService.addContact(toAdd);
+        final String updatedString = "Updated";
+        added.getName().setFirst(updatedString);
+        added.getAddress().setStreet(updatedString);
+        ContactDto updated = contactService.updateContact(added);
+        ContactDto updatedRetrieved = contactService.getContactById(updated.getId());
+        // TODO: Not checking phone number updates here because I ran into some weirdness because
+        // TODO: the tests are using the same object. Maybe come back and script the test db entries instead.
+        assertEquals(updatedString, updatedRetrieved.getName().getFirst());
+        assertEquals(updatedString, updatedRetrieved.getAddress().getStreet());
+    }
+
+    @Test
+    void updateById_NotFound() {
+        ContactDto notExists = getTestContact();
+        notExists.setId(42);
+        ContactDto shouldBeNull = contactService.updateContact(notExists);
+        assertNull(shouldBeNull);
+    }
+
     private ContactDto getTestContact() {
         ContactDto toAdd = new ContactDto();
         toAdd.setName(new Name(

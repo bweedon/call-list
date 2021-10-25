@@ -25,12 +25,7 @@ public class ContactService {
     }
 
     public ContactDto addContact(ContactDto toAdd) {
-        Person personToAdd = Person.From(toAdd);
-        // Set the person object on the phone number so that they are persisted correctly.
-        personToAdd.getPhoneNumbers().forEach(phoneNumber -> {
-            phoneNumber.setPerson(personToAdd);
-        });
-        Person added = personDao.save(personToAdd);
+        Person added = personDao.save(getPersonFromContact(toAdd));
         return ContactDto.From(added);
     }
 
@@ -42,5 +37,28 @@ public class ContactService {
         } else {
             return null;
         }
+    }
+
+    public ContactDto updateContact(ContactDto toUpdate) {
+        Person personToUpdate = getPersonFromContact(toUpdate);
+        // Not sure if this check is necessary based on the requirements or not, but went ahead and put it in.
+        if(personDao.existsById(personToUpdate.getId())) {
+            Person updated = personDao.save(getPersonFromContact(toUpdate));
+            return ContactDto.From(updated);
+        } else {
+            //Don't update
+            return null;
+        }
+    }
+
+    private Person getPersonFromContact(ContactDto contact) {
+        Person person = Person.From(contact);
+        // Set the id here since it may be used in an update
+        person.setId(contact.getId());
+        // Set the person object on the phone number so that they are persisted correctly.
+        person.getPhoneNumbers().forEach(phoneNumber -> {
+            phoneNumber.setPerson(person);
+        });
+        return person;
     }
 }

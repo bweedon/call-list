@@ -28,4 +28,11 @@ public class ContactController {
     public ContactDto getContactById(@PathVariable int contactId) {
         return contactService.getContactById(contactId);
     }
+
+    @PutMapping(value = "/{contactId}", consumes = "application/json", produces = "application/json")
+    public ContactDto updateContact(@RequestBody ContactDto toUpdate, @PathVariable int contactId) {
+        //Set the id since in the spec that wouldn't be sent to me
+        toUpdate.setId(contactId);
+        return contactService.updateContact(toUpdate);
+    }
 }
