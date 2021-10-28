@@ -31,7 +31,7 @@ spring.datasource.url=jdbc:h2:file:~/call-list-db
   - The mapping also made some weird incrementing happen with the Ids. They would skip numbers.
 - Figure out the issue with the JPA query for finding by home phone so that I didn't need to right a manual query for it. Maybe I'm thinking there is more smarts built into it than there is, but I could have sworn that you could drill into sub-objects with underscores.
 - Logging... I didn't add any logging, but would go back and include SLF4J for logging.
-- Add in sorting by adding it directly to the custom query or passing in two chained sort objects.
+- ~~Add in sorting by adding it directly to the custom query or passing in two chained sort objects.~~
 
 ### Testing
 

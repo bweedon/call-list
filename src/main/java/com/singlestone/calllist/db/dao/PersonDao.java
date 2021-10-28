@@ -15,6 +15,6 @@ public interface PersonDao extends JpaRepository<Person, Integer> {
     // I'm not sure which piece I'm missing, but I'm pretty sure I can use the below method. The app wouldn't start with
     // it so going to leave it a lone for now and do a custon query.
     // List<Person> findAllByPhoneNumber_PhoneType(PhoneType type);
-    @Query("SELECT p from Person p join PhoneNumber pn on pn.person.Id = p.Id where lower(pn.type) = lower('home')")
+    @Query("SELECT p from Person p join PhoneNumber pn on pn.person.Id = p.Id where lower(pn.type) = lower('home') order by p.lastName, p.firstName")
     List<Person> findByPhoneNumber_WithHomePhone();
 }

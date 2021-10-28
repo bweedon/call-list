@@ -106,7 +106,7 @@ class ContactServiceTest {
 
     @Test
     @Order(8)
-    void CallList_Filter() {
+    void callList_Filter() {
         ContactDto toAdd1 = getTestContact();
         ContactDto toAdd2 = getTestContact();
         ContactDto toAdd3 = getTestContact();
@@ -118,6 +118,42 @@ class ContactServiceTest {
         contactService.addContact(toAdd3);
         List<CallEntryDto> callList = contactService.getCallList();
         Assertions.assertEquals(2, callList.size());
+    }
+
+    @Test
+    @Order(9)
+    void callList_TestOrder() {
+        ContactDto toAdd1 = getTestContact();
+        ContactDto toAdd2 = getTestContact();
+        ContactDto toAdd3 = getTestContact();
+        ContactDto toAdd4 = getTestContact();
+        ContactDto toAdd5 = getTestContact();
+        toAdd1.setPhone(Arrays.asList(
+                new PhoneNumber("not home", PhoneType.MOBILE)
+        ));
+        toAdd2.getName().setFirst("a");
+        toAdd2.getName().setLast("a");
+        toAdd3.getName().setFirst("a");
+        toAdd3.getName().setLast("c");
+        toAdd4.getName().setFirst("c");
+        toAdd4.getName().setLast("a");
+        toAdd5.getName().setFirst("b");
+        toAdd5.getName().setLast("a");
+        contactService.addContact(toAdd1);
+        contactService.addContact(toAdd2);
+        contactService.addContact(toAdd3);
+        contactService.addContact(toAdd4);
+        contactService.addContact(toAdd5);
+        List<CallEntryDto> callList = contactService.getCallList();
+        Assertions.assertEquals(4, callList.size());
+        Assertions.assertEquals("a", callList.get(0).getName().getFirst());
+        Assertions.assertEquals("a", callList.get(0).getName().getLast());
+        Assertions.assertEquals("b", callList.get(1).getName().getFirst());
+        Assertions.assertEquals("a", callList.get(1).getName().getLast());
+        Assertions.assertEquals("c", callList.get(2).getName().getFirst());
+        Assertions.assertEquals("a", callList.get(2).getName().getLast());
+        Assertions.assertEquals("a", callList.get(3).getName().getFirst());
+        Assertions.assertEquals("c", callList.get(3).getName().getLast());
     }
 
     private ContactDto getTestContact() {
